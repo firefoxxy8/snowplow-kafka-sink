@@ -32,7 +32,7 @@ def listen():
 
   # Kafka
   consumer = KafkaConsumer(bootstrap_servers=os.environ["KAFKA_BOOTSTRAP_SRVS"], group_id=os.environ["KAFKA_GROUP_ID"])
-  consumer.subscribe([os.environ["KAFKA_SOURCE_TOPIC"])
+  consumer.subscribe([os.environ["KAFKA_SOURCE_TOPIC"]])
 
   # Snowplow
   e = Emitter(os.environ["SP_COLLECTOR_URI"],protocol=os.environ["SP_COLLECTOR_PROTOCOL"],port=int(os.environ["SP_COLLECTOR_PORT"]),method=os.environ["SP_COLLECTOR_METHOD"])
