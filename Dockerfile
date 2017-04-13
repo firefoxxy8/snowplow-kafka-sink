@@ -41,18 +41,7 @@ RUN pip install snowplow-tracker
 RUN easy_install --upgrade pip
 RUN pip install requests==2.6.0
 
-ENTRYPOINT ["/Preco/src/main/script/autostart.sh"]
+# Kafka support
+RUN pip install kafka
 
-# Build-time metadata as defined at http://label-schema.org
-ARG BUILD_DATE
-ARG VCS_REF
-ARG VERSION
-LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="snowplow-webhook" \
-      org.label-schema.description="Webhook based on python tracker" \
-      org.label-schema.url="http://kolibero.eu" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/goliasz/snowplow-webhook" \
-      org.label-schema.vendor="KOLIBERO" \
-      org.label-schema.version=$VERSION \
-      org.label-schema.schema-version="1.0"
+ENTRYPOINT ["/Preco/src/main/script/autostart.sh"]
