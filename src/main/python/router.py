@@ -40,25 +40,28 @@ def listen():
 
   for msg in consumer:
     #
-    indata = json.loads(msg.value)
+    try:
+      indata = json.loads(msg.value)
+      
+      s1 = Subject()
+      s1.set_platform("app")
+      s1.set_user_id("??")
+      s1.set_lang("??")
+      s1.set_ip_address("0.0.0.0")
+      s1.set_useragent("??")
+      
+      t.set_subject(s1)
 
-    s1 = Subject()
-    s1.set_platform("app")
-    s1.set_user_id("??")
-    s1.set_lang("??")
-    s1.set_ip_address("0.0.0.0")
-    s1.set_useragent("??")
+      t.track_self_describing_event(SelfDescribingJson("iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0",{
+        "data":{
+          "data": indata
+        },
+        "schema": "iglu:"+os.environ["OPERATOR_ID"]+"/"+os.environ["APP_ID"]+"/jsonschema/1-0-0"
+      }))
 
-    t.set_subject(s1)
-
-    t.track_self_describing_event(SelfDescribingJson("iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0",{
-      "data":{
-        "data": indata
-      },
-      "schema": "iglu:"+os.environ["OPERATOR_ID"]+"/"+os.environ["APP_ID"]+"/jsonschema/1-0-0"
-    }))
-
-    t.flush()
+      t.flush()
+    except Exception,Argument:
+      print "Error:",str(Argument)
   
 if __name__ == '__main__':
   listen()
